@@ -1,0 +1,33 @@
+[
+	{
+		"name": "tuffy",
+		"Weight": 10,
+		"category": [
+			"dog",
+			"pet",
+			"domestic-animal"
+		]
+	},
+	{
+		"name": "martin",
+		"Weight": 250,
+		"category": [
+			"tiger",
+			"pet",
+			"wild-domestic-animal"
+		]
+	},
+	{
+		"name": "lio",
+		"Weight": 220,
+		"category": [
+			"lion",
+			"pet",
+			"wild-domestic-animal"
+		]
+	},
+	{
+		"name": "dastan",
+		"Weight": 0
+	}
+]
