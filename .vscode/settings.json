@@ -1,0 +1,6 @@
+{
+    "workbench.colorTheme": "Monokai Dimmed",
+    "gopls": {
+        "experimentalWorkspaceModule": true,
+    }
+}
