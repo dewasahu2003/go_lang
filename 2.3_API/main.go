@@ -3,6 +3,7 @@ package main
 import (
 	"encoding/json"
 	"fmt"
+	"log"
 	"math/rand"
 	"net/http"
 	"strconv"
@@ -11,10 +12,10 @@ import (
 	"github.com/gorilla/mux"
 )
 
-type Courses struct {
+type Course struct {
 	CourseId    string  `json:"courseid"`
 	CourseName  string  `json:"coursename"`
-	CoursePrice int     `json:"courseprice"`
+	CoursePrice int     `json:"price"`
 	Author      *Author `json:"author"`
 }
 
@@ -24,10 +25,10 @@ type Author struct {
 }
 
 //fake database
-var courses []Courses
+var courses []Course
 
 //middleware,helper
-func (c *Courses) IsEmpty() bool {
+func (c *Course) IsEmpty() bool {
 	//return c.CourseId == "" && c.CourseName == ""
 	return c.CourseName == ""
 }
@@ -36,6 +37,25 @@ func main() {
 	fmt.Println("API")
 	//Encoder-> turing our object into json  --via (w) 💯
 	//Decoder-> turing our json into object --via (r) 💯
+	fmt.Println("API-routing")
+
+	r := mux.NewRouter()
+	//seeding the data := to show some response when we check get_allCourses
+	courses = append(courses, Course{CourseId: "1", CourseName: "CTO", CoursePrice: 500, Author: &Author{FullName: "astonmartin", Website: "changetheorder.com"}})
+
+	// routing
+	r.HandleFunc("/", home).Methods("GET")
+	r.HandleFunc("/courses", getallcourses).Methods("GET")
+	r.HandleFunc("/courses/{id}", get_oneCourse).Methods("GET")
+	// {id} := is the thing that we catch in the params...🤗
+	r.HandleFunc("/course", add_oneCourse).Methods("POST")
+	r.HandleFunc("/course/{id}", update_OneCourse).Methods("PUT")
+	r.HandleFunc("/course/{id}", delete_OneCourse).Methods("DELETE")
+
+	//all methods checked
+
+	//listen to port
+	log.Fatal(http.ListenAndServe(":1000", r))
 }
 
 //controller
@@ -86,17 +106,19 @@ func add_oneCourse(w http.ResponseWriter, r *http.Request) {
 	}
 
 	//what if := body of req is {}
-	var course *Courses
-	_ = json.NewDecoder(r.Body).Decode(course)
-	if course.IsEmpty() {
+	var courseObj Course //normal variable
+
+	_ = json.NewDecoder(r.Body).Decode(&courseObj)
+
+	if courseObj.IsEmpty() {
 		json.NewEncoder(w).Encode("no data inside JSON")
 		return
 	}
 	rand.Seed(time.Now().UnixNano())
-	course.CourseId = strconv.Itoa(rand.Intn(100))
-	courses = append(courses, *course)
-	json.NewEncoder(w).Encode(course)
-	return
+	courseObj.CourseId = strconv.Itoa(rand.Intn(100))
+	courses = append(courses, courseObj)
+	json.NewEncoder(w).Encode(courseObj)
+
 }
 func update_OneCourse(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("🎊-updating one course")
@@ -112,7 +134,7 @@ func update_OneCourse(w http.ResponseWriter, r *http.Request) {
 		if course.CourseId == params["id"] {
 			courses = append(courses[:index], courses[index+1:]...) //delete
 
-			var new_course Courses //make new object
+			var new_course Course //make new object
 			_ = json.NewDecoder(r.Body).Decode(&new_course)
 
 			new_course.CourseId = params["id"] //keep the id same

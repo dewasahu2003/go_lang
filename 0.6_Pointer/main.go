@@ -21,4 +21,12 @@ func main() {
 	fmt.Println("New value 👑", myNum)
 	//make change to *ptr (holding pointer) or to main var the thing will be same
 
+	/*
+		//Life-Saving 🧬🦺 --pointer
+
+
+		var dog Animal    //declare normal variable
+		somemethod(&dog) //reference to the variable created -> when need to apply changes to operations that does not know the datatype
+	*/
+
 }
