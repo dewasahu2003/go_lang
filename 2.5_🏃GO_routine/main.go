@@ -37,7 +37,9 @@ func main() {
 	}
 
 	fmt.Println("☄️☄️☄️")
-	wg.Wait()
+	wg.Wait() //"wait for myguys they are just coming"
+	// wait is necessary to hold the goroutine
+	// that are in queue when we lock the memory for a particular routine
 	fmt.Println(signals)
 }
 

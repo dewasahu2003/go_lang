@@ -8,8 +8,12 @@ func main() {
 	fmt.Printf("The addition is: %+v\n", result)
 
 	proresult, comment, score := proadder(1, 2, 3, 2, 2)
-	fmt.Printf("Proadder adds to: %v with comment: %v and a score😀 of: %v", proresult, comment, score)
+	fmt.Printf("Proadder adds to: %v with comment: %v and a score😀 of: %v\n", proresult, comment, score)
 
+	anonymus_function := func(s string) { //like js
+		fmt.Printf("%+v I'm anonymous\n", s)
+	}
+	anonymus_function("hello")
 }
 
 func add(x int, y int) int {

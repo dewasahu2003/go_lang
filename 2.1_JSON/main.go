@@ -56,7 +56,7 @@ func DecodeJson() {
 	}
 
 	fmt.Println("========================🤗======================")
-
+	//json_to_map
 	var mapOfAnimals []map[string]interface{}
 	json.Unmarshal(bytedata, &mapOfAnimals)
 	fmt.Printf("%#v\n", mapOfAnimals)
